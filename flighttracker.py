@@ -54,7 +54,7 @@ class paintWidget(QtWidgets.QWidget):
         self.x1 = 0
         self.y1 = 0
         self.x2 = 0
-        self.x3 = 0
+        self.y2 = 0
 
         self.map_button = QtWidgets.QPushButton('Show Map', self)
         self.map_button.clicked.connect(parent.setStyle)   
@@ -122,5 +122,5 @@ def main():
     window.show() 
     sys.exit(app.exec_())
     
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
