@@ -5,7 +5,10 @@ there's some online versions of this already but this is for people who prefer a
 
 draw lines with mouseclick. on the bottom left: slide to change the opacity, click to show/hide the map.
 
-.zip with exe file at: https://1drv.ms/u/s!AlVB8XoAcSZgvcV-l1CkiIhgJMnCuw
+.zip with exe file at:
+
+..* https://1drv.ms/u/s!AlVB8XoAcSZgvcV-l1CkiIhgJMnCuw
+..* https://puu.sh/wj9Wc/cb012bab73.zip
 
 ![](http://i.imgur.com/5e4bqpU.png)
 
