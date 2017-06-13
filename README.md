@@ -7,8 +7,8 @@ draw lines with mouseclick. on the bottom left: slide to change the opacity, cli
 
 .zip with exe file at:
 
-..* https://1drv.ms/u/s!AlVB8XoAcSZgvcV-l1CkiIhgJMnCuw
-..* https://puu.sh/wj9Wc/cb012bab73.zip
+- https://1drv.ms/u/s!AlVB8XoAcSZgvcV-l1CkiIhgJMnCuw
+- https://puu.sh/wj9Wc/cb012bab73.zip
 
 ![](http://i.imgur.com/5e4bqpU.png)
 
