@@ -26,6 +26,8 @@ class Marker:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.xrange = (x-2, x+2)
+        self.yrange = (y-2, y+2)
 
 class Window(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
@@ -160,6 +162,12 @@ class paintWidget(QtWidgets.QWidget):
         self.x2 = QMouseEvent.x()
         self.y2 = QMouseEvent.y()
         
+        if QMouseEvent.button() == QtCore.Qt.RightButton:
+            for i, marker in enumerate(self.markers):
+                if abs(self.x2 - marker.x) < 10 and abs(self.y2 - marker.y) < 10:
+                    del self.markers[i]
+                    self.scatter = False
+
         if self.FlightLine is True: 
             self.x2 = (self.x2 - self.x1) * 100
             self.y2 = (self.y2 - self.y1) * 100
