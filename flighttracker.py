@@ -245,7 +245,7 @@ class paintWidget(QtWidgets.QWidget):
         painter.drawLine(self.flightLine.x1, self.flightLine.y1, self.flightLine.x2, self.flightLine.y2)
         
     def drawParachute(self, event, painter):
-        painter.setOpacity(0.3)
+        painter.setOpacity(0.6)
         
         pen = QtGui.QPen(QtCore.Qt.NoPen)
         painter.setPen(pen)
@@ -292,7 +292,7 @@ class paintWidget(QtWidgets.QWidget):
         self.parachuteDrawn = True
         
     def redrawParachute(self, event, painter):
-        painter.setOpacity(0.3)
+        painter.setOpacity(0.6)
         
         pen = QtGui.QPen(QtCore.Qt.NoPen)
         painter.setPen(pen)
