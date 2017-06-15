@@ -11,8 +11,8 @@ import sys
 
 class Spawns:
     def __init__(self):
-        self.carSpawns = [[0.305, 0.34375], [0.28125, 0.30625], [0.2125, 0.41875], 
-                          [0.4475, 0.36], [0.4375, 0.50375], [0.5, 0.4975], [0.545625, 0.37125],
+        self.carSpawns = [[0.305, 0.34375], [0.28125, 0.30625], [0.2125, 0.42], 
+                          [0.4475, 0.36], [0.4375, 0.50375], [0.5, 0.375], [0.545625, 0.37125],
                           [0.5725, 0.39125], [0.64125, 0.30625], [0.745, 0.5925], [0.7125, 0.7375],
                           [0.74875, 0.7625], [0.76875, 0.36625], [0.87875, 0.41]]
 
@@ -399,12 +399,12 @@ class paintWidget(QtWidgets.QWidget):
         painter.setOpacity(1)
         pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.white), 10, QtCore.Qt.SolidLine)
         painter.setPen(pen)
+        print(self.carSpawnIcon.size().width())
+        print(self.carSpawnIcon.size().height())
         
-        for spawn in self.spawns.carSpawns:
-#            painter.drawPoint(spawn[0] * self.size, spawn[1] * self.size)   
-            
-            painter.drawPixmap(spawn[0] * self.size, spawn[1] * self.size, self.carSpawnIcon)
-             
+        for spawn in self.spawns.carSpawns:            
+            painter.drawPixmap(spawn[0] * self.size - self.carSpawnIcon.width() / 2, spawn[1] * self.size - self.carSpawnIcon.height(), self.carSpawnIcon)
+ 
 def main():
     app = QtWidgets.QApplication(sys.argv) 
     app.setWindowIcon(QtGui.QIcon('flighttracker_icon.png'))
