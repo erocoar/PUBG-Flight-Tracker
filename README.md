@@ -7,7 +7,7 @@ there's some web based versions of this already but this is for people who prefe
 - draw flight line with mouseclick/drag
 - jump and parachute area is displayed and can be toggled on/off with 'Toggle Parachute' button
 - '(Re)Start' button clears window
-- 'Toggle Car Spawns' button toggles the display of safe spawns (based on ShatterNL's PUBG Map v.03)
+- 'Toggle Car Spawns' button toggles the display of likely spawns (based on ShatterNL's PUBG Map v.03)
 - set (and remove) your own markers (blue) with right click
 
 ## how to use
