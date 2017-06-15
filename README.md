@@ -1,20 +1,38 @@
 # PUBG-Flight-Tracker
 keeping track of flight route in PUBG
 
-there's some online versions of this already but this is for people who prefer a kind of overlay to tab in quickly while ingame
+there's some web based versions of this already but this is for people who prefer a kind of overlay to tab in quickly while ingame
 
-features:
+## features
 - draw flight line with mouseclick/drag
 - jump and parachute area is displayed and can be toggled on/off with 'Toggle Parachute' button
 - '(Re)Start' button clears window
-- set (and remove) markers with right click
+- 'Toggle Car Spawns' button toggles the display of safe spawns (based on ShatterNL's PUBG Map v.03)
+- set (and remove) your own markers (blue) with right click
 
-!the program is meant to be placed right on top of the ingame PUBG map and set to low opacity! 
+## how to use
+- open flighttracker.exe
+- place the window **so that it covers your pubg map**, resize accordingly (should be a square)
+- **click the 'Toggle Window Frame Button'** to enable transparency
+- use! 
 
-.zip with exe file at:
+## download
+.zip file at 
+- https://puu.sh/wkXYi/a33dd91f18.zip
+- https://1drv.ms/u/s!AlVB8XoAcSZgvccLWy5pKzbUE6_Sqg
 
-- https://puu.sh/wkLTh/b509b288a0.zip
-- https://1drv.ms/u/s!AlVB8XoAcSZgvcY6Y68dTQyk6jxAag
+## example
 
-![](http://i.imgur.com/NA9vlqO.png)
+![](https://puu.sh/wkXFk/ffb3a44c08.jpg)
 
+## known errors / todo
+- window slightly repositions when toggling frame
+- map toggle does not currently work
+- car spawns might not be completely accurate
+- when toggling restart and resizing, flight line + area redraws
+-
+- make sure window resolution is square
+- more spawns
+- better markers
+- shortest jump distance to point
+- group view? 
