@@ -101,6 +101,7 @@ class paintWidget(QtWidgets.QWidget):
     def __init__(self, parent = Window):
         super(paintWidget, self).__init__(parent)
         
+        self.carSpawnIcon = QtGui.QPixmap('car_spawn_icon.png')
         self.spawns = Spawns()
         self.toggleCarSpawns = True
         
@@ -149,6 +150,7 @@ class paintWidget(QtWidgets.QWidget):
         self.vbox.addWidget(self.start_button, 0, QtCore.Qt.AlignLeft)
         self.vbox.addWidget(self.move_toggle_button, 0, QtCore.Qt.AlignLeft)
         self.vbox.addWidget(self.chute_toggle_button, 0, QtCore.Qt.AlignLeft)
+        self.vbox.addWidget(self.toggle_car_spawn_button, 0, QtCore.Qt.AlignLeft)
         self.vbox.addWidget(self.map_button, 0, QtCore.Qt.AlignLeft)
         self.vbox.addWidget(self.slider_label)
         self.vbox.addWidget(self.opac_slider, 0, QtCore.Qt.AlignLeft)
@@ -399,7 +401,9 @@ class paintWidget(QtWidgets.QWidget):
         painter.setPen(pen)
         
         for spawn in self.spawns.carSpawns:
-            painter.drawPoint(spawn[0] * self.size, spawn[1] * self.size)   
+#            painter.drawPoint(spawn[0] * self.size, spawn[1] * self.size)   
+            
+            painter.drawPixmap(spawn[0] * self.size, spawn[1] * self.size, self.carSpawnIcon)
              
 def main():
     app = QtWidgets.QApplication(sys.argv) 
