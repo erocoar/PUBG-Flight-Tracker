@@ -32,20 +32,28 @@ class Marker:
 class Window(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
         super(Window, self).__init__(parent)
-        self.paintArea = paintWidget(self)
+        self.paintArea = paintWidget(self)              
         self.setCentralWidget(self.paintArea)
         self.setWindowTitle('PUBG Flight Tracker')
-        self.styleSet = False
-        self.setGeometry(350,100,904,904)
         
+#        screen = QtWidgets.QApplication.desktop().screenNumber()
+        self.resize(QtWidgets.QDesktopWidget().availableGeometry().height(), QtWidgets.QDesktopWidget().availableGeometry().height())
+        self.move(QtWidgets.QDesktopWidget().availableGeometry().center() - self.frameGeometry().center())
+        
+#        self.flags = QtCore.Qt.Window
+        self.flag_toggle = False
+#        self.setWindowFlags(self.flags)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         self.setAutoFillBackground(False)
+        
         self.bg_palette = QtGui.QPalette()
         self.bg_palette.setBrush(QtGui.QPalette.Background, QtGui.QBrush(QtGui.QPixmap("pubg_map.jpg").scaled(
                 self.frameGeometry().width(), self.frameGeometry().height())))
         
+        self.styleSet = False
         self.empty_palette = QtGui.QPalette()
         self.setPalette(self.empty_palette)
-        
+
     def resizeEvent(self, event):
         if self.styleSet:
             self.bg_palette.setBrush(QtGui.QPalette.Background, QtGui.QBrush(QtGui.QPixmap("pubg_map.jpg").scaled(
@@ -53,6 +61,19 @@ class Window(QtWidgets.QMainWindow):
             self.setPalette(self.bg_palette)
         else:
             pass
+        
+    def move_toggle(self):
+        flags = QtCore.Qt.Window
+        print(flags)
+        if self.flag_toggle is False:
+            flags |= QtCore.Qt.FramelessWindowHint
+            self.flag_toggle = True
+        
+        elif self.flag_toggle is True:
+            self.flag_toggle = False
+            
+        self.setWindowFlags(flags)
+        self.show()
         
     def setOpacity(self, value):
         opacity = value / 100
@@ -92,6 +113,8 @@ class paintWidget(QtWidgets.QWidget):
                 
         self.start_button = QtWidgets.QPushButton('(Re)Start', self)
         self.start_button.clicked.connect(self.start)
+        self.move_toggle_button = QtWidgets.QPushButton('Toggle Window Frame', self)
+        self.move_toggle_button.clicked.connect(parent.move_toggle)
         self.chute_toggle_button = QtWidgets.QPushButton('Toggle Parachute', self)
         self.chute_toggle_button.clicked.connect(self.chute_toggle)
         self.map_button = QtWidgets.QPushButton('Toggle Map', self)
@@ -112,11 +135,12 @@ class paintWidget(QtWidgets.QWidget):
         self.vbox.addWidget(self.logo)
         self.vbox.addStretch(1)
         self.vbox.addWidget(self.start_button, 0, QtCore.Qt.AlignLeft)
+        self.vbox.addWidget(self.move_toggle_button, 0, QtCore.Qt.AlignLeft)
         self.vbox.addWidget(self.chute_toggle_button, 0, QtCore.Qt.AlignLeft)
         self.vbox.addWidget(self.map_button, 0, QtCore.Qt.AlignLeft)
         self.vbox.addWidget(self.slider_label)
         self.vbox.addWidget(self.opac_slider, 0, QtCore.Qt.AlignLeft)
-        
+
     def start(self):
         self.redraw = True
         self.markers = []
@@ -180,15 +204,29 @@ class paintWidget(QtWidgets.QWidget):
         self.update()
         
     def paintEvent(self, event):
+        
         if self.redraw is True:
             self.redraw = False
+            painter = QtGui.QPainter()
+            painter.setPen(QtGui.QPen(QtCore.Qt.gray,3,QtCore.Qt.DashDotLine ) )
+            painter.begin(self)
+            rect = QtCore.QRectF(0, 0, self.frameGeometry().width()-1, self.frameGeometry().height()-1)
+            painter.drawRect(rect)
+            painter.fillRect(rect, QtGui.QBrush(QtGui.QColor(128, 128, 255, 1))) 
             return
-        
         painter = QtGui.QPainter()
-        painter.setOpacity(1)
-#        painter.setRenderHint(QtGui.QPainter.Antialiasing)
-        painter.begin(self)
         
+        painter.setPen(QtGui.QPen(QtCore.Qt.gray,3,QtCore.Qt.DashDotLine ) )
+        
+        painter.begin(self)
+               
+        rect = QtCore.QRectF(0, 0, self.frameGeometry().width()-1, self.frameGeometry().height()-1)
+        painter.drawRect(rect)
+        painter.fillRect(rect, QtGui.QBrush(QtGui.QColor(128, 128, 255, 1)))  
+
+        painter.setOpacity(1)
+        
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
         try:
             if self.scatter is True:
                 self.drawScatter(event, painter)
@@ -313,8 +351,7 @@ class paintWidget(QtWidgets.QWidget):
         
         self.brush.setColor(QtGui.QColor(255, 215, 10, 128))
         painter.fillPath(path_outer, self.brush)
-        
-        
+         
     def perpCalc(self, x1, y1, x2, y2, offset):
         dx = x1 - x2
         dy = y1 - y2
