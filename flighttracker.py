@@ -9,6 +9,13 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from math import sqrt
 import sys
 
+class Spawns:
+    def __init__(self):
+        self.carSpawns = [[0.305, 0.34375], [0.28125, 0.30625], [0.2125, 0.41875], 
+                          [0.4475, 0.36], [0.4375, 0.50375], [0.5, 0.4975], [0.545625, 0.37125],
+                          [0.5725, 0.39125], [0.64125, 0.30625], [0.745, 0.5925], [0.7125, 0.7375],
+                          [0.74875, 0.7625], [0.76875, 0.36625], [0.87875, 0.41]]
+
 class FlightLine:
     def __init__(self, x1, y1, x2, y2):
         self.x1 = x1
@@ -66,7 +73,7 @@ class Window(QtWidgets.QMainWindow):
         flags = QtCore.Qt.Window
         print(flags)
         if self.flag_toggle is False:
-            flags |= QtCore.Qt.FramelessWindowHint
+            flags = QtCore.Qt.FramelessWindowHint
             self.flag_toggle = True
         
         elif self.flag_toggle is True:
@@ -94,6 +101,9 @@ class paintWidget(QtWidgets.QWidget):
     def __init__(self, parent = Window):
         super(paintWidget, self).__init__(parent)
         
+        self.spawns = Spawns()
+        self.toggleCarSpawns = True
+        
         self.FlightLine = True
         self.redraw = False
         self.scatter = False
@@ -118,7 +128,9 @@ class paintWidget(QtWidgets.QWidget):
         self.chute_toggle_button = QtWidgets.QPushButton('Toggle Parachute', self)
         self.chute_toggle_button.clicked.connect(self.chute_toggle)
         self.map_button = QtWidgets.QPushButton('Toggle Map', self)
-        self.map_button.clicked.connect(parent.setStyle)   
+        self.map_button.clicked.connect(parent.setStyle)  
+        self.toggle_car_spawn_button = QtWidgets.QPushButton('Toggle Car Spawns', self)
+        self.toggle_car_spawn_button.clicked.connect(self.carSpawnToggle)
         self.opac_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal)
         self.opac_slider.setRange(40, 100)
         self.opac_slider.valueChanged.connect(parent.setOpacity)
@@ -148,7 +160,15 @@ class paintWidget(QtWidgets.QWidget):
         self.flightLine = None
         self.flightAreaToggle = True
         self.polygons = ParachutePolygons()
-        self.update()       
+        self.update() 
+        
+    def carSpawnToggle(self):
+        if self.toggleCarSpawns is True:
+            self.toggleCarSpawns = False
+        else:
+            self.toggleCarSpawns = True
+        
+        self.update()
         
     def chute_toggle(self):
         if self.flightAreaToggle is False:
@@ -227,14 +247,8 @@ class paintWidget(QtWidgets.QWidget):
         painter.setOpacity(1)
         
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
-        try:
-            if self.scatter is True:
-                self.drawScatter(event, painter)
-                self.scatter = False
-            
-            elif len(self.markers) > 0:
-                self.redrawScatter(event, painter)
-            
+        
+        try:           
             if self.parachuteDrawn is False and self.FlightLine is True:
                     self.drawFlightLine(event, painter)
                     
@@ -245,6 +259,16 @@ class paintWidget(QtWidgets.QWidget):
                 self.redrawFlightLine(event, painter)
                 if self.flightAreaToggle is True:
                     self.redrawParachute(event, painter)
+                    
+            if self.toggleCarSpawns is True:
+                self.drawSpawns(event, painter)
+                
+            if self.scatter is True:
+                self.drawScatter(event, painter)
+                self.scatter = False
+            
+            elif len(self.markers) > 0:
+                self.redrawScatter(event, painter)
             
         except:
             pass
@@ -283,7 +307,7 @@ class paintWidget(QtWidgets.QWidget):
         painter.drawLine(self.flightLine.x1, self.flightLine.y1, self.flightLine.x2, self.flightLine.y2)
         
     def drawParachute(self, event, painter):
-        painter.setOpacity(0.6)
+        painter.setOpacity(0.4)
         
         pen = QtGui.QPen(QtCore.Qt.NoPen)
         painter.setPen(pen)
@@ -330,7 +354,7 @@ class paintWidget(QtWidgets.QWidget):
         self.parachuteDrawn = True
         
     def redrawParachute(self, event, painter):
-        painter.setOpacity(0.6)
+        painter.setOpacity(0.4)
         
         pen = QtGui.QPen(QtCore.Qt.NoPen)
         painter.setPen(pen)
@@ -368,6 +392,14 @@ class paintWidget(QtWidgets.QWidget):
         yperp_outer = self.offset_outer * normy
         
         return xperp_inner, yperp_inner, xperp_outer, yperp_outer
+    
+    def drawSpawns(self, event, painter):
+        painter.setOpacity(1)
+        pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.white), 10, QtCore.Qt.SolidLine)
+        painter.setPen(pen)
+        
+        for spawn in self.spawns.carSpawns:
+            painter.drawPoint(spawn[0] * self.size, spawn[1] * self.size)   
              
 def main():
     app = QtWidgets.QApplication(sys.argv) 
