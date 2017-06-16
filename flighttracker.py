@@ -101,7 +101,9 @@ class paintWidget(QtWidgets.QWidget):
     def __init__(self, parent = Window):
         super(paintWidget, self).__init__(parent)
         
+        self.playerIcon = QtGui.QPixmap('player_icon.png')
         self.carSpawnIcon = QtGui.QPixmap('car_spawn_icon.png')
+        
         self.spawns = Spawns()
         self.toggleCarSpawns = True
         
@@ -232,17 +234,15 @@ class paintWidget(QtWidgets.QWidget):
             painter = QtGui.QPainter()
             painter.setPen(QtGui.QPen(QtCore.Qt.gray,3,QtCore.Qt.DashDotLine ) )
             painter.begin(self)
-            rect = QtCore.QRectF(0, 0, self.frameGeometry().width()-1, self.frameGeometry().height()-1)
+            rect = QtCore.QRectF(0, 0, self.frameGeometry().width() - 1, self.frameGeometry().height() - 1)
             painter.drawRect(rect)
             painter.fillRect(rect, QtGui.QBrush(QtGui.QColor(128, 128, 255, 1))) 
             return
         painter = QtGui.QPainter()
-        
-        painter.setPen(QtGui.QPen(QtCore.Qt.gray,3,QtCore.Qt.DashDotLine ) )
-        
+                
         painter.begin(self)
                
-        rect = QtCore.QRectF(0, 0, self.frameGeometry().width()-1, self.frameGeometry().height()-1)
+        rect = QtCore.QRectF(0, 0, self.frameGeometry().width() - 1, self.frameGeometry().height() - 1)
         painter.drawRect(rect)
         painter.fillRect(rect, QtGui.QBrush(QtGui.QColor(128, 128, 255, 1)))  
 
@@ -278,22 +278,18 @@ class paintWidget(QtWidgets.QWidget):
         painter.end()
         
     def drawScatter(self, event, painter):
-        painter.setOpacity(1)
-        pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.blue), 10, QtCore.Qt.SolidLine)
-        painter.setPen(pen)
-        
+        painter.setOpacity(1)       
         self.markers.append(Marker(self.x2, self.y2))
         
         for marker in self.markers:
-            painter.drawPoint(marker.x, marker.y)
+            painter.drawPixmap(marker.x - self.playerIcon.width() / 2,
+                               marker.y - self.playerIcon.height(), self.playerIcon)
             
     def redrawScatter(self, event, painter):
         painter.setOpacity(1)
-        pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.blue), 10, QtCore.Qt.SolidLine)
-        painter.setPen(pen)
-        
         for marker in self.markers:
-            painter.drawPoint(marker.x, marker.y)
+            painter.drawPixmap(marker.x - self.playerIcon.width() / 2,
+                   marker.y - self.playerIcon.height(), self.playerIcon)
         
     def drawFlightLine(self, event, painter):
         pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.red), 5, QtCore.Qt.SolidLine)
@@ -399,11 +395,10 @@ class paintWidget(QtWidgets.QWidget):
         painter.setOpacity(1)
         pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.white), 10, QtCore.Qt.SolidLine)
         painter.setPen(pen)
-        print(self.carSpawnIcon.size().width())
-        print(self.carSpawnIcon.size().height())
         
         for spawn in self.spawns.carSpawns:            
-            painter.drawPixmap(spawn[0] * self.size - self.carSpawnIcon.width() / 2, spawn[1] * self.size - self.carSpawnIcon.height(), self.carSpawnIcon)
+            painter.drawPixmap(spawn[0] * self.size - self.carSpawnIcon.width() / 2, 
+                               spawn[1] * self.size - self.carSpawnIcon.height(), self.carSpawnIcon)
  
 def main():
     app = QtWidgets.QApplication(sys.argv) 
