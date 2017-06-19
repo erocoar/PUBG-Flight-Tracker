@@ -9,6 +9,7 @@ there's some web based versions of this already but this is for people who prefe
 - '(Re)Start' button clears window
 - 'Toggle Car Spawns' button toggles the display of likely spawns (based on ShatterNL's PUBG Map v.06)
 - set (and remove) your own markers (blue) with right click
+- set (and remove) danger markers (yellow) with middle click
 
 ## how to use
 - open flighttracker.exe
