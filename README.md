@@ -17,10 +17,10 @@ there's some web based versions of this already but this is for people who prefe
 - **click the 'Toggle Window Frame Button'** to enable transparency
 - use! 
 
-## download
+## download (update 19.06.17)
 .zip file at 
-- https://puu.sh/wkXYi/a33dd91f18.zip
-- https://1drv.ms/u/s!AlVB8XoAcSZgvccLWy5pKzbUE6_Sqg
+- https://puu.sh/woFfs/3c326d68d1.zip
+- https://1drv.ms/u/s!AlVB8XoAcSZgvccryRKRYVSqbwVUGA
 
 ## example
 
