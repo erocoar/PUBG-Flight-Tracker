@@ -7,7 +7,7 @@ there's some web based versions of this already but this is for people who prefe
 - draw flight line with mouseclick/drag
 - jump and parachute area is displayed and can be toggled on/off with 'Toggle Parachute' button
 - '(Re)Start' button clears window
-- 'Toggle Car Spawns' button toggles the display of likely spawns (based on ShatterNL's PUBG Map v.03)
+- 'Toggle Car Spawns' button toggles the display of likely spawns (based on ShatterNL's PUBG Map v.06)
 - set (and remove) your own markers (blue) with right click
 
 ## how to use
@@ -26,13 +26,11 @@ there's some web based versions of this already but this is for people who prefe
 ![](https://puu.sh/wkXFk/ffb3a44c08.jpg)
 
 ## known errors / todo
-- window slightly repositions when toggling frame
+- when re-activating window frame, window size increases
 - map toggle does not currently work
-- car spawns might not be completely accurate
 - when toggling restart and resizing, flight line + area redraws
 -
 - make sure window resolution is square
 - more spawns
-- better markers
 - shortest jump distance to point
 - group view? 
