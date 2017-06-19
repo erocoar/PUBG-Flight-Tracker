@@ -23,14 +23,11 @@ there's some web based versions of this already but this is for people who prefe
 
 ## example
 
-![](https://puu.sh/wkXFk/ffb3a44c08.jpg)
+![](https://puu.sh/woEUX/cb039fef44.jpg)
 
 ## known errors / todo
 - when re-activating window frame, window size increases
 - map toggle does not currently work
-- when toggling restart and resizing, flight line + area redraws
 -
-- make sure window resolution is square
-- more spawns
 - shortest jump distance to point
 - group view? 
