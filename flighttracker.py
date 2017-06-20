@@ -17,16 +17,22 @@ class Spawns:
                           [0.7125, 0.85875], [0.7375, 0.75], [0.7475, 0.7625],
                           [0.74275, 0.5925], [0.78, 0.3375], [0.8775, 0.41]]
 
-        
         self.boatSpawns = [[0.1625, 0.14], [0.45375, 0.12875], [0.71125, 0.035],
                            [0.77, 0.05125], [0.855, 0.125], [0.83625, 0.2], 
                            [0.8625, 0.20875], [0.855, 0.2475], [0.101875, 0.375],
                            [0.164375, 0.3275], [0.3, 0.325], [0.3375, 0.328125],
-                           [0.4125, 0.375], [0.3025, 0.3625], [0.49875, 0.33],
+                           [0.4125, 0.375], [0.49875, 0.33],
                            [0.57375, 0.309375], [0.611875, 0.271875], 
                            [0.86375, 0.35375], [0.89875, 0.4025], [0.10375, 0.49],
-                           [0.1025, 0.491875], [0.065, 0.6025]]
-                           
+                           [0.065, 0.6025], [0.13875, 0.78875], [0.235, 0.76125],
+                           [0.25375, 0.73375], [0.2875, 0.725], [0.35375, 0.715],
+                           [0.56375, 0.61375], [0.6125, 0.626], [0.725, 0.6275],
+                           [0.65625, 0.64], [0.77375, 0.635], [0.90625, 0.5925],
+                           [0.3775, 0.76125], [0.42125, 0.705], [0.45, 0.7],
+                           [0.505, 0.6725], [0.58125, 0.66125], [0.66625, 0.69265], 
+                           [0.75125, 0.72625], [0.785625, 0.75125], [0.7875, 7875],
+                           [0.50625, 0.91375], [0.59375, 0.90125], [0.66, 0.8725]]
+        
 class FlightLine:
     def __init__(self, x1, y1, x2, y2):
         self.x1 = x1
@@ -85,9 +91,10 @@ class Window(QtWidgets.QMainWindow):
         flags = QtCore.Qt.Window
 
         if self.flag_toggle is False:
-            x = self.x() - (self.geometry().x() - self.x())
+#            x = self.x() - (self.geometry().x() - self.x())
+            x = self.x()
             y = self.y() - (self.geometry().y() - self.y())
-            w = self.frameGeometry().width()
+            w = self.geometry().width()
 
             flags = QtCore.Qt.FramelessWindowHint
             self.flag_toggle = True
@@ -131,7 +138,7 @@ class paintWidget(QtWidgets.QWidget):
         self.toggleCarSpawns = True
         self.toggleBoatSpawns = True
         
-        self.FlightLine = True
+        self.toggleFlightLine = True
         self.redraw = False
         self.scatter = False
         self.parachuteDrawn = False
@@ -204,8 +211,11 @@ class paintWidget(QtWidgets.QWidget):
     def start(self):
         self.redraw = True
         self.markers = []
+        self.dangerMarkers = []
         self.parachuteDrawn = False
         self.flightLine = None
+        self.toggleFlightLine = True
+        self.FlightArea = False
         self.flightAreaToggle = True
         self.polygons = ParachutePolygons()
         self.update() 
@@ -219,7 +229,7 @@ class paintWidget(QtWidgets.QWidget):
         self.update()
         
     def boatSpawnToggle(self):
-        if self.toggleBoatSPawns is True:
+        if self.toggleBoatSpawns is True:
             self.toggleBoatSpawns = False
         else:
             self.toggleBoatSpawns = True
@@ -243,15 +253,15 @@ class paintWidget(QtWidgets.QWidget):
     def mousePressEvent(self, QMouseEvent):
         if QMouseEvent.button() == QtCore.Qt.RightButton:
             self.scatter = True
-            self.FlightLine = False
+            self.toggleFlightLine = False
             self.FlightArea = False
             
         elif QMouseEvent.button() == QtCore.Qt.LeftButton:
-            self.FlightLine = True
+            self.toggleFlightLine = True
             self.FlightArea = False
             
         elif QMouseEvent.button() == QtCore.Qt.MiddleButton:
-            self.FlightLine = False
+            self.toggleFlightLine = False
             self.FlightArea = False
             self.dangerScatter = True
     
@@ -274,12 +284,12 @@ class paintWidget(QtWidgets.QWidget):
                     self.scatter = False
                     
         elif QMouseEvent.button() == QtCore.Qt.MiddleButton:
-            for i, marker in enumerate(self.markers):
+            for i, marker in enumerate(self.dangerMarkers):
                 if abs(self.x2 - marker.x) < 14 and abs(self.y2 - marker.y) < 14:
                     del self.markers[i]
                     self.dangerScatter = False
 
-        if self.FlightLine is True: 
+        if self.toggleFlightLine is True: 
             self.x2 = (self.x2 - self.x1) * 100
             self.y2 = (self.y2 - self.y1) * 100
             self.x1 = (self.x2 - self.x1) * - 100
@@ -293,14 +303,15 @@ class paintWidget(QtWidgets.QWidget):
     def paintEvent(self, event):
         
         if self.redraw is True:
-            self.redraw = False
             painter = QtGui.QPainter()
             painter.setPen(QtGui.QPen(QtCore.Qt.gray,3,QtCore.Qt.DashDotLine ) )
             painter.begin(self)
             rect = QtCore.QRectF(0, 0, self.frameGeometry().width() - 1, self.frameGeometry().height() - 1)
             painter.drawRect(rect)
-            painter.fillRect(rect, QtGui.QBrush(QtGui.QColor(128, 128, 255, 1))) 
+            painter.fillRect(rect, QtGui.QBrush(QtGui.QColor(128, 128, 255, 1)))
+            self.redraw = False
             return
+        
         painter = QtGui.QPainter()
                 
         painter.begin(self)
@@ -312,21 +323,19 @@ class paintWidget(QtWidgets.QWidget):
         painter.setOpacity(1)
         
         painter.setRenderHint(QtGui.QPainter.Antialiasing)
-        
         try:           
-            if self.parachuteDrawn is False and self.FlightLine is True:
-                    self.drawFlightLine(event, painter)
+            if self.parachuteDrawn is False and self.toggleFlightLine is True:
+                self.drawFlightLine(event, painter)
                     
-            if self.parachuteDrawn is False and self.FlightArea is True:
-                self.drawParachute(event, painter)
+                if self.FlightArea is True:
+                    self.drawParachute(event, painter)
                     
-            if self.parachuteDrawn is True:
+            elif self.parachuteDrawn is True:
                 self.redrawFlightLine(event, painter)
                 if self.flightAreaToggle is True:
                     self.redrawParachute(event, painter)
-                    
-            if self.toggleCarSpawns is True:
-                self.drawSpawns(event, painter)
+
+            self.drawSpawns(event, painter)
                 
             if self.scatter is True:
                 self.drawScatter(event, painter)
@@ -380,8 +389,8 @@ class paintWidget(QtWidgets.QWidget):
         pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.red), 5, QtCore.Qt.SolidLine)
         painter.setOpacity(1)
         painter.setPen(pen)
-        painter.drawLine(self.x1, self.y1, self.x2, self.y2)
         self.flightLine = FlightLine(self.x1, self.y1, self.x2, self.y2)
+        painter.drawLine(self.flightLine.x1, self.flightLine.y1, self.flightLine.x2, self.flightLine.y2)
         
     def redrawFlightLine(self, event, painter):
         pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.red), 5, QtCore.Qt.SolidLine)
@@ -481,13 +490,15 @@ class paintWidget(QtWidgets.QWidget):
         pen = QtGui.QPen(QtGui.QColor(QtCore.Qt.white), 10, QtCore.Qt.SolidLine)
         painter.setPen(pen)
         
-        for spawn in self.spawns.carSpawns:            
-            painter.drawPixmap(spawn[0] * self.size - self.carSpawnIcon.width() / 2, 
-                               spawn[1] * self.size - self.carSpawnIcon.height(), self.carSpawnIcon)
+        if self.toggleCarSpawns is True:
+            for spawn in self.spawns.carSpawns:            
+                painter.drawPixmap(spawn[0] * self.size - self.carSpawnIcon.width() / 2, 
+                                   spawn[1] * self.size - self.carSpawnIcon.height(), self.carSpawnIcon)
             
-        for spawn in self.spawns.boatSpawns:
-            painter.drawPixmap(spawn[0] * self.size - self.boatSpawnIcon.width() / 2, 
-                   spawn[1] * self.size - self.boatSpawnIcon.height(), self.boatSpawnIcon)
+        if self.toggleBoatSpawns is True:
+            for spawn in self.spawns.boatSpawns:
+                painter.drawPixmap(spawn[0] * self.size - self.boatSpawnIcon.width() / 2, 
+                       spawn[1] * self.size - self.boatSpawnIcon.height(), self.boatSpawnIcon)
             
  
 def main():
